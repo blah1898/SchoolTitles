@@ -1,0 +1,114 @@
+% file genericTitle.sty
+% last modified 2016/08/20
+
+% Copyright Bruce Hernandez <hernandez.bruce8@uabc.edu.mx> 2016
+% You are free to distribute and modify this file to your liking
+% Attribution is highly encouraged, but not required
+
+% Read README.md for usage
+
+\ProvidesPackage{genericTitle}[2016/08/20 v0.1 a generic title page for school work]
+
+\RequirePackage{graphicx}     % For logos and title images
+\RequirePackage{etoolbox}      % To handle undefined parameters
+\RequirePackage{translations}   % For the 'untitled' translation
+
+\DeclareTranslation{english}{untitled}{Untitled}
+\DeclareTranslation{spanish}{untitled}{Sin título}
+\DeclareTranslation{japanese}{untitled}{無題}
+\DeclareTranslationFallback{untitled}{Untitled}
+
+\undef{\@title}
+\undef{\@author}
+
+\newcommand*{\instituteLogo}[1]{\gdef\@instituteLogo{#1}}
+\newcommand*{\institute}[1]{\gdef\@institute{#1}}
+\newcommand*{\faculty}[1]{\gdef\@faculty{#1}}
+\newcommand*{\titleImage}[1]{\gdef\@titleImage{#1}}
+\newcommand*{\subject}[1]{\gdef\@subject{#1}}
+\newcommand*{\authorId}[1]{\gdef\@authorId{#1}}
+\newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}}
+
+\renewcommand*{\maketitle}{%
+    \begin{titlepage}
+        \centering
+        \ifdef{\@instituteLogo}{%
+            \includegrahpics[height=2cm]{\@instituteLogo}
+            \par
+        }{}
+        \ifdef{\@institute}{%
+            {
+                \huge
+                \@institute
+                \par
+            }
+        }{}
+        \ifdef{\@faculty}{%
+            {
+                \LARGE\it
+                \@faculty
+                \par
+            }
+        }{}
+        % There's probably a way better way of doing this, here we add
+        % space if either the institute or faculty were specified
+        \ifdef{\@faculty}{%
+            \vspace{0.5cm}
+        }{%
+            \ifdef{\@institute}{%
+                \vspace{0.5cm}
+            }{}
+        }
+        {
+            \Large\bf
+            \ifdef{\@title}{%
+                \@title
+            }{
+                \GetTranslation{untitled}
+            }
+            \par
+        }
+        \ifdef{\@titleImage}{%
+            \includegraphics[height=5cm]{\@titleImage}
+        }{%
+            \vspace{5cm}
+        }
+        \ifdef{\@subject}{%
+            {
+                \large
+                \@subject
+                \par
+                \vspace{0.4cm}
+            }
+        }{}
+        \ifdef{\@author}{%
+            {
+                \large\it
+                \@author
+                \ifdef{\@authorId}{%
+                    \normalfont
+                    ,
+                    \large
+                    \@authorId
+                }{}
+                \par
+                \vspace{0.3cm}
+            }
+        }{}
+        \ifdef{\@supervisor}{%
+            {
+                \large
+                \@supervisor
+                \par
+            }
+        }{}
+        \ifdef{\@date}{%
+            {
+                \vspace{0.4cm}
+                \large
+                \@date
+            }
+        }{}
+    \end{titlepage}
+}
+

@@ -16,3 +16,8 @@ package() {
     cd "$srcdir/SchoolTitles"
     TEXMF_ROOT=$pkgdir make install
 }
+
+post_install() {
+    echo "Running texhash..."
+    texhash
+}

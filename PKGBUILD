@@ -14,7 +14,7 @@ sha1sums=("SKIP")
 
 package() {
     cd "$srcdir/SchoolTitles"
-    TEXMF_ROOT=$pkgdir make install
+    TEXMF_ROOT=$pkgdir/usr/share/texmf-dist make install
 }
 
 post_install() {
